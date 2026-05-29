@@ -6,15 +6,11 @@ export default function Experience() {
 
   return (
     <section id="experience" ref={ref} className="py-xxl max-w-7xl mx-auto px-gutter reveal">
-      <div className="text-center mb-xl">
-        <div className="font-label-md text-label-md text-primary-fixed-dim tracking-widest mb-sm">
-          // TIMELINE
-        </div>
-        <h2 className="font-headline-lg text-headline-lg text-primary">Experience</h2>
-      </div>
+      <h2 className="font-headline-lg text-headline-lg text-primary-fixed-dim mb-xxl uppercase">
+        On-Chain History
+      </h2>
 
-      <div className="relative">
-        {/* Vertical line */}
+      <div className="relative ml-4 md:ml-0">
         <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px timeline-line" />
 
         <div className="space-y-xl">
@@ -27,13 +23,9 @@ export default function Experience() {
   )
 }
 
-function TimelineItem({
-  item,
-}: {
-  item: (typeof EXPERIENCE)[number]
-}) {
+function TimelineItem({ item }: { item: (typeof EXPERIENCE)[number] }) {
   const ref = useReveal()
-  const isRight = item.align === 'right'
+  const isLeft = item.cardSide === 'left'
 
   return (
     <div
@@ -41,33 +33,41 @@ function TimelineItem({
       className="relative flex flex-col md:flex-row items-center md:justify-between group reveal"
     >
       {/* Timeline dot */}
-      <div className="absolute left-0 md:left-1/2 w-3 h-3 rounded-full bg-primary-fixed-dim -translate-x-1/2 border-2 border-[#0a0a0f] z-10 group-hover:scale-150 transition-transform" />
+      <div className="absolute left-[-4px] md:left-1/2 md:translate-x-[-50%] w-[10px] h-[10px] bg-white rounded-full shadow-[0_0_15px_#00dce5] z-10 transition-transform group-hover:scale-150" />
 
-      {/* Card — alternates sides */}
-      <div
-        className={`md:w-[45%] w-full pl-6 md:pl-0 ${
-          isRight
-            ? 'md:order-2 md:text-left md:ml-auto'
-            : 'md:order-1 md:text-right md:mr-auto'
-        } glass p-lg rounded-xl glass-hover`}
-      >
-        <div className="font-label-md text-label-md text-primary-fixed-dim mb-xs tracking-widest">
-          {item.period}
-        </div>
-        <h3 className="font-headline-md text-headline-md text-primary mb-xs">{item.company}</h3>
-        <div className="font-label-md text-label-md text-secondary-fixed-dim mb-sm">{item.role}</div>
-        <p className="font-body-md text-body-md text-on-surface-variant mb-md">{item.description}</p>
-        <div className={`flex flex-wrap gap-sm ${!isRight ? 'md:justify-end' : ''}`}>
-          {item.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-sm py-xs font-label-sm text-label-sm text-primary-fixed-dim border border-primary-fixed-dim/30 rounded-full"
-            >
-              {tag}
+      {isLeft ? (
+        <>
+          {/* Card on left */}
+          <div className="md:w-[45%] order-2 md:order-1 glass p-lg rounded-xl glass-hover">
+            <span className={`text-label-sm ${item.statusColor} font-bold mb-xs block`}>
+              {item.statusLabel}
             </span>
-          ))}
-        </div>
-      </div>
+            <h4 className="font-headline-md text-primary-fixed-dim">{item.company}</h4>
+            <p className="text-body-md text-on-surface-variant mt-sm">{item.description}</p>
+          </div>
+
+          {/* Date on right (desktop only) */}
+          <div className="hidden md:block md:w-[45%] order-3 text-left pl-lg">
+            <span className="font-headline-md text-on-surface-variant/50">{item.period}</span>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Date on left (desktop only) */}
+          <div className="hidden md:block md:w-[45%] order-1 text-right pr-lg">
+            <span className="font-headline-md text-on-surface-variant/50">{item.period}</span>
+          </div>
+
+          {/* Card on right */}
+          <div className="md:w-[45%] order-2 glass p-lg rounded-xl glass-hover">
+            <span className={`text-label-sm ${item.statusColor} font-bold mb-xs block`}>
+              {item.statusLabel}
+            </span>
+            <h4 className="font-headline-md text-primary-fixed-dim">{item.company}</h4>
+            <p className="text-body-md text-on-surface-variant mt-sm">{item.description}</p>
+          </div>
+        </>
+      )}
     </div>
   )
 }
